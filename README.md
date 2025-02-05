@@ -1,3 +1,3 @@
 # BlogIT
 
-First attempt of IT blog
+First attempt of IT blog :)
