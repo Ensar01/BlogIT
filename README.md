@@ -1,3 +1,3 @@
 # BlogIT
 
-First attempt of BiH IT blog :)
+First attempt of BiH IT blog :) Soon I'll start
