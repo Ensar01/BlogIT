@@ -23,6 +23,14 @@ namespace BlogIT
                 app.UseSwaggerUI();
             }
 
+            app.UseCors(
+                options => options
+                     .SetIsOriginAllowed(x => _ = true)
+                     .AllowAnyMethod()
+                     .AllowAnyHeader()
+                     .AllowCredentials()
+); //This needs to set everything allowed
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
@@ -31,6 +39,7 @@ namespace BlogIT
             app.MapControllers();
 
             app.Run();
+
         }
     }
 }
