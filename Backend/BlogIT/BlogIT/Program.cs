@@ -1,3 +1,5 @@
+using BlogIT.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogIT
 {
@@ -5,7 +7,12 @@ namespace BlogIT
     {
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false)
+            .Build();
+
             var builder = WebApplication.CreateBuilder(args);
+
 
             // Add services to the container.
 
@@ -14,6 +21,7 @@ namespace BlogIT
             //builder.Services.AddOpenApi();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
