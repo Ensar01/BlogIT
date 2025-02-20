@@ -1,7 +1,12 @@
 using BlogIT.Data;
 using BlogIT.Data.Models;
+using BlogIT.Interfaces;
+using BlogIT.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlogIT
 {
@@ -32,6 +37,31 @@ namespace BlogIT
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequiredLength = 8;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme =
+                options.DefaultChallengeScheme =
+                options.DefaultForbidScheme =
+                options.DefaultScheme =
+                options.DefaultSignInScheme =
+                options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"])
+                    )
+                };
+            });
+            builder.Services.AddScoped<ITokenService, TokenService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -51,6 +81,8 @@ namespace BlogIT
         ); //This needs to set everything allowed
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
