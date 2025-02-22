@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 
 namespace BlogIT
 {
@@ -58,6 +59,20 @@ namespace BlogIT
                     IssuerSigningKey = new SymmetricSecurityKey(
                         System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"])
                     )
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = ctx =>
+                    {
+                        ctx.Request.Cookies.TryGetValue("token", out var token);
+                        if(!string.IsNullOrEmpty(token))
+                        {
+                            ctx.Token = token;
+                        }
+                        return Task.CompletedTask;
+                       
+                    }
                 };
             });
             builder.Services.AddScoped<ITokenService, TokenService>();
