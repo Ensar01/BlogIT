@@ -11,6 +11,7 @@ namespace BlogIT.Controllers
         public UserController(ApplicationDbContext context)
         {
             _context = context;
+            
         }
         
     }
