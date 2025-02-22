@@ -30,7 +30,7 @@ namespace BlogIT.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(10),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = credentials,
                 Issuer = _config["JwtSettings:Issuer"],
                 Audience = _config["JwtSettings:Audience"]
