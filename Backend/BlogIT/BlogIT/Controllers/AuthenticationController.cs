@@ -56,13 +56,34 @@ namespace BlogIT.Controllers
             _context.RefreshTokens.Add(refreshToken);
             await _context.SaveChangesAsync();
 
-            return Ok(
-                new
-                {
-                    token,
-                    refreshToken.Token
+            return Ok(refreshToken);
+        }
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        {
+            var tokenEntry = await _context.RefreshTokens
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.Token == refreshToken);
+
+            if (tokenEntry is null || tokenEntry.ExpiresOn < DateTime.UtcNow)
+            {
+                return Unauthorized("The refresh token has expired");
+            }
+
+            string accessToken = _tokenService.GenerateToken(tokenEntry.User);
+
+            tokenEntry.Token = _tokenService.GenerateRefreshToken();
+            tokenEntry.ExpiresOn = DateTime.UtcNow.AddDays(7);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                AccessToken = accessToken,
+                RefreshToken = tokenEntry.Token
             });
         }
+       
         [HttpPut]
         public async Task SeedAsync()
         {
