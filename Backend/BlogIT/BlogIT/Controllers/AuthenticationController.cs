@@ -37,15 +37,9 @@ namespace BlogIT.Controllers
             }
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userLoginDto.Username);
-
-            if(user == null)
-            {
-                return Unauthorized("Invalid credentials");
-            }
-
             var loginResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDto.Password, false);
 
-            if(!loginResult.Succeeded)
+            if (user == null || !loginResult.Succeeded)
             {
                 return Unauthorized("Invalid credentials");
             }
