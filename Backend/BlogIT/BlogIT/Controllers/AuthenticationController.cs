@@ -44,7 +44,7 @@ namespace BlogIT.Controllers
                 return Unauthorized("Invalid credentials");
             }
 
-            var token = _tokenService.GenerateToken(user);
+            string token = _tokenService.GenerateToken(user);
 
             var refreshToken = await _refreshTokenService.CreateOrUpdateRefreshToken(user);
 
