@@ -1,4 +1,5 @@
-﻿using BlogIT.Data;
+﻿using Azure.Core;
+using BlogIT.Data;
 using BlogIT.Data.Models;
 using BlogIT.DataTransferObjects;
 using BlogIT.Interfaces;
@@ -47,8 +48,19 @@ namespace BlogIT.Controllers
             }
 
             string token = _tokenService.GenerateToken(user);
+
+            var existingRefreshToken = await _context.RefreshTokens
+             .Where(r => r.UserId == user.Id)
+             .ToListAsync(); ;
+
+            if (existingRefreshToken.Any())
+            {
+                _context.RefreshTokens.RemoveRange(existingRefreshToken);
+            }
+
             var refreshToken = new RefreshToken
             {
+                Id = Guid.NewGuid(),
                 UserId = user.Id,
                 Token = _tokenService.GenerateRefreshToken(),
                 ExpiresOn = DateTime.UtcNow.AddDays(7)
@@ -56,9 +68,15 @@ namespace BlogIT.Controllers
             _context.RefreshTokens.Add(refreshToken);
             await _context.SaveChangesAsync();
 
-            return Ok(refreshToken);
+            return Ok(new
+            {
+                AccessToken = token,
+                RefreshToken = refreshToken.Token
+            });
         }
-        [HttpPost("refresh-token")]
+
+
+        [HttpPost()]
         public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
         {
             var tokenEntry = await _context.RefreshTokens
@@ -70,17 +88,27 @@ namespace BlogIT.Controllers
                 return Unauthorized("The refresh token has expired");
             }
 
-            string accessToken = _tokenService.GenerateToken(tokenEntry.User);
+            var user = tokenEntry.User;
 
-            tokenEntry.Token = _tokenService.GenerateRefreshToken();
-            tokenEntry.ExpiresOn = DateTime.UtcNow.AddDays(7);
+            _context.RefreshTokens.Remove(tokenEntry);
+           
+            string token = _tokenService.GenerateToken(tokenEntry.User);
 
+            var newRefreshToken = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Token = _tokenService.GenerateRefreshToken(),
+                ExpiresOn = DateTime.UtcNow.AddDays(7)
+            };
+
+            _context.RefreshTokens.Add(newRefreshToken);
             await _context.SaveChangesAsync();
 
             return Ok(new
             {
-                AccessToken = accessToken,
-                RefreshToken = tokenEntry.Token
+                AccessToken = token,
+                RefreshToken = newRefreshToken.Token
             });
         }
        
@@ -89,12 +117,12 @@ namespace BlogIT.Controllers
         {
             // Check if any users exist in the database, if not, add test users
             var existingUser = await _userManager.FindByEmailAsync("testuser@example.com");
-            if (existingUser == null)
+            if (existingUser != null)
             {
                 var user = new User
                 {
-                    UserName = "testuser",
-                    Email = "testuser@example.com",
+                    UserName = "testusesr",
+                    Email = "testusersss@example.com",
                     Name = "Test",
                     LastName = "User",
                     BirthDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-25)), // Example birthdate
