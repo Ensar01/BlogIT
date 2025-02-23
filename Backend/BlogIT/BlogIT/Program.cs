@@ -77,6 +77,7 @@ namespace BlogIT
                 };
             });
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<RefreshTokenService>();
 
             var app = builder.Build();
 

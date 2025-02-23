@@ -18,13 +18,16 @@ namespace BlogIT.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
-        public AuthenticationController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
+        private readonly RefreshTokenService _refreshTokenService;
+        public AuthenticationController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService, RefreshTokenService refreshTokenService)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _refreshTokenService = refreshTokenService;
         }
+
         [HttpPost]
         public async Task<IActionResult> Login ([FromBody]UserLoginDto userLoginDto)
         {
@@ -37,41 +40,25 @@ namespace BlogIT.Controllers
 
             if(user == null)
             {
-                return Unauthorized("Invalid username");
+                return Unauthorized("Invalid credentials");
             }
 
             var loginResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDto.Password, false);
 
             if(!loginResult.Succeeded)
             {
-                return Unauthorized("Incorrect username or password.");
+                return Unauthorized("Invalid credentials");
             }
 
-            string token = _tokenService.GenerateToken(user);
+            var token = _tokenService.GenerateToken(user);
 
-            var existingRefreshToken = await _context.RefreshTokens
-             .Where(r => r.UserId == user.Id)
-             .ToListAsync(); ;
-
-            if (existingRefreshToken.Any())
-            {
-                _context.RefreshTokens.RemoveRange(existingRefreshToken);
-            }
-
-            var refreshToken = new RefreshToken
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Token = _tokenService.GenerateRefreshToken(),
-                ExpiresOn = DateTime.UtcNow.AddDays(7)
-            };
-            _context.RefreshTokens.Add(refreshToken);
-            await _context.SaveChangesAsync();
+            var refreshToken = await _refreshTokenService.CreateOrUpdateRefreshToken(user);
 
             return Ok(new
             {
+                RefreshToken = refreshToken.Token,
                 AccessToken = token,
-                RefreshToken = refreshToken.Token
+                
             });
         }
 
@@ -94,16 +81,7 @@ namespace BlogIT.Controllers
            
             string token = _tokenService.GenerateToken(tokenEntry.User);
 
-            var newRefreshToken = new RefreshToken
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Token = _tokenService.GenerateRefreshToken(),
-                ExpiresOn = DateTime.UtcNow.AddDays(7)
-            };
-
-            _context.RefreshTokens.Add(newRefreshToken);
-            await _context.SaveChangesAsync();
+            var newRefreshToken = await _refreshTokenService.CreateRefreshToken(user);
 
             return Ok(new
             {
