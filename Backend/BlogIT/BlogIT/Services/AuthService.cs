@@ -2,15 +2,16 @@
 using BlogIT.Data;
 using BlogIT.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using BlogIT.DataTransferObjects;
 
 namespace BlogIT.Services
 {
-    public class RefreshTokenService
+    public class AuthService
     {
         private readonly ApplicationDbContext _context;
         private readonly ITokenService _tokenService;
 
-        public RefreshTokenService(ApplicationDbContext context, ITokenService tokenService)
+        public AuthService(ApplicationDbContext context, ITokenService tokenService)
         {
             _context = context;
             _tokenService = tokenService;
@@ -55,6 +56,13 @@ namespace BlogIT.Services
             await _context.SaveChangesAsync();
 
             return refreshToken;
+        }
+        public async Task<AuthTokensDto> GenerateTokens(User user)
+        {
+            string token = _tokenService.GenerateToken(user);
+            var refreshToken = await CreateOrUpdateRefreshToken(user);
+
+            return new AuthTokensDto(token, refreshToken.Token);
         }
     }
 }

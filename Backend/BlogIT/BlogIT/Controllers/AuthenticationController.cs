@@ -18,14 +18,16 @@ namespace BlogIT.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
-        private readonly RefreshTokenService _refreshTokenService;
-        public AuthenticationController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService, RefreshTokenService refreshTokenService)
+        private readonly ITokenStorageService _tokenStorageService;
+        private readonly AuthService _authService;
+        public AuthenticationController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService, AuthService refreshTokenService, ITokenStorageService tokenStorageService)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
-            _refreshTokenService = refreshTokenService;
+            _authService = refreshTokenService;
+            _tokenStorageService = tokenStorageService;
         }
 
         [HttpPost]
@@ -44,22 +46,19 @@ namespace BlogIT.Controllers
                 return Unauthorized("Invalid credentials");
             }
 
-            string token = _tokenService.GenerateToken(user);
+            var AuthTokenDto = await _authService.GenerateTokens(user);
 
-            var refreshToken = await _refreshTokenService.CreateOrUpdateRefreshToken(user);
+            _tokenStorageService.SetTokens(AuthTokenDto);
 
-            return Ok(new
-            {
-                RefreshToken = refreshToken.Token,
-                AccessToken = token,
-                
-            });
+            return Ok();
         }
 
 
         [HttpPost()]
-        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        public async Task<IActionResult> RefreshToken()
         {
+            HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken);
+
             var tokenEntry = await _context.RefreshTokens
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(r => r.Token == refreshToken);
@@ -75,7 +74,7 @@ namespace BlogIT.Controllers
            
             string token = _tokenService.GenerateToken(tokenEntry.User);
 
-            var newRefreshToken = await _refreshTokenService.CreateRefreshToken(user);
+            var newRefreshToken = await _authService.CreateRefreshToken(user);
 
             return Ok(new
             {
