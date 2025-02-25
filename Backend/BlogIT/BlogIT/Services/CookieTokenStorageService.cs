@@ -1,5 +1,7 @@
-﻿using BlogIT.DataTransferObjects;
+﻿using Azure;
+using BlogIT.DataTransferObjects;
 using BlogIT.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlogIT.Services
 {
@@ -32,6 +34,27 @@ namespace BlogIT.Services
                 SameSite = SameSiteMode.None,
                 IsEssential = true,
                 Expires = DateTime.UtcNow.AddDays(7)
+            });
+        }
+
+        public void RevokeCookies()
+        {
+            var context = _httpContextAccessor.HttpContext;
+
+            context.Response.Cookies.Append("refreshToken", "", new CookieOptions
+            {
+                Expires = DateTime.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+
+            context.Response.Cookies.Append("accessToken", "", new CookieOptions
+            {
+                Expires = DateTime.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
             });
         }
     }

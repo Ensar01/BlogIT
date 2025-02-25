@@ -69,6 +69,12 @@ namespace BlogIT.Controllers
 
             return Ok();
         }
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            _tokenStorageService.RevokeCookies();
+            return NoContent();
+        }
 
 
         [HttpPost()]
