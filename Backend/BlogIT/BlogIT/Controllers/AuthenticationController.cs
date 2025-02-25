@@ -4,6 +4,7 @@ using BlogIT.Data.Models;
 using BlogIT.DataTransferObjects;
 using BlogIT.Interfaces;
 using BlogIT.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +70,8 @@ namespace BlogIT.Controllers
 
             return Ok();
         }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

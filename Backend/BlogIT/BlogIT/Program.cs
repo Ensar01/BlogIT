@@ -66,7 +66,7 @@ namespace BlogIT
                 {
                     OnMessageReceived = ctx =>
                     {
-                        ctx.Request.Cookies.TryGetValue("token", out var token);
+                        ctx.Request.Cookies.TryGetValue("accessToken", out var token);
                         if(!string.IsNullOrEmpty(token))
                         {
                             ctx.Token = token;
@@ -76,10 +76,12 @@ namespace BlogIT
                     }
                 };
             });
+           
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<ITokenStorageService, CookieTokenStorageService>();
+
 
             var app = builder.Build();
 
