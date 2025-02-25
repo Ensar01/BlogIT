@@ -42,21 +42,7 @@ namespace BlogIT.Services
             await _context.SaveChangesAsync();
             return refreshToken;
         }
-        public async Task<RefreshToken> CreateRefreshToken(User user)
-        {
-            var refreshToken = new RefreshToken
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Token = _tokenService.GenerateRefreshToken(),
-                ExpiresOn = DateTime.UtcNow.AddDays(7)
-            };
-
-            _context.RefreshTokens.Add(refreshToken);
-            await _context.SaveChangesAsync();
-
-            return refreshToken;
-        }
+        
         public async Task<AuthTokensDto> GenerateTokens(User user)
         {
             string token = _tokenService.GenerateToken(user);

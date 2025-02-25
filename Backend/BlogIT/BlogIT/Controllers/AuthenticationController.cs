@@ -71,16 +71,13 @@ namespace BlogIT.Controllers
             var user = tokenEntry.User;
 
             _context.RefreshTokens.Remove(tokenEntry);
-           
-            string token = _tokenService.GenerateToken(tokenEntry.User);
+            await _context.SaveChangesAsync();
 
-            var newRefreshToken = await _authService.CreateRefreshToken(user);
+            var AuthTokenDto = await _authService.GenerateTokens(user);
 
-            return Ok(new
-            {
-                AccessToken = token,
-                RefreshToken = newRefreshToken.Token
-            });
+            _tokenStorageService.SetTokens(AuthTokenDto);
+
+            return Ok();
         }
        
         [HttpPut]
