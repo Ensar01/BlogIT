@@ -29,7 +29,24 @@ namespace BlogIT.Controllers
             _authService = refreshTokenService;
             _tokenStorageService = tokenStorageService;
         }
+        [HttpPost]
 
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your registration.");
+            }
+
+        }
         [HttpPost]
         public async Task<IActionResult> Login ([FromBody]UserLoginDto userLoginDto)
         {
