@@ -81,6 +81,7 @@ namespace BlogIT
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<ITokenStorageService, CookieTokenStorageService>();
+            builder.Services.AddScoped<UserService>();
 
 
             var app = builder.Build();

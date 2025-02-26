@@ -21,7 +21,9 @@ namespace BlogIT.Controllers
         private readonly ITokenService _tokenService;
         private readonly ITokenStorageService _tokenStorageService;
         private readonly AuthService _authService;
-        public AuthenticationController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService, AuthService refreshTokenService, ITokenStorageService tokenStorageService)
+        private readonly UserService _userService;
+        public AuthenticationController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService,
+            AuthService refreshTokenService, ITokenStorageService tokenStorageService, UserService userService)
         {
             _context = context;
             _userManager = userManager;
@@ -29,6 +31,7 @@ namespace BlogIT.Controllers
             _tokenService = tokenService;
             _authService = refreshTokenService;
             _tokenStorageService = tokenStorageService;
+            _userService = userService;
         }
         [HttpPost]
 
@@ -40,6 +43,17 @@ namespace BlogIT.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                if (await _userService.UserExists(userRegisterDto.UserName, userRegisterDto.PhoneNumber, userRegisterDto.Email))
+                {
+                    return BadRequest(new ValidationProblemDetails
+                    {
+                        Title = "Validation Error",
+                        Detail = "A user with this username, email, or phone number already exists.",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+                }
+
+
                 return Ok();
             }
             catch(Exception ex)
