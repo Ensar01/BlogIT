@@ -33,8 +33,8 @@ namespace BlogIT.Controllers
             _tokenStorageService = tokenStorageService;
             _userService = userService;
         }
-        [HttpPost]
 
+        [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
         {
             try
@@ -53,8 +53,15 @@ namespace BlogIT.Controllers
                     });
                 }
 
+                var result = await _userService.RegisterUser(userRegisterDto);
 
-                return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok("User registered successfully.");
+                }
+
+
+                return BadRequest(result.Errors);
             }
             catch(Exception ex)
             {
