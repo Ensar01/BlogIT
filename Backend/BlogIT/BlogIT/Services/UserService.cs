@@ -15,33 +15,15 @@ namespace BlogIT.Services
         public UserService(UserManager<User> userManager, ApplicationDbContext context, ILogger<UserService> logger)
         {
             _userManager = userManager;
-            _context = _context;
+            _context = context;
             _logger = logger;
         }
 
         public async Task<bool> UserExists(string username, string phoneNumber, string email)
         {
-            
-            var userByUsername = await _userManager.FindByNameAsync(username);
-            if (userByUsername != null)
-            {
-                return true; 
-            }
-           
-            var userByEmail = await _userManager.FindByEmailAsync(email);
-            if (userByEmail != null)
-            {
-                return true; 
-            }
 
-            var userByPhoneNumber = await _userManager.Users
-                .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
-            if (userByPhoneNumber != null)
-            {
-                return true; 
-            }
-
-            return false; 
+            return await _userManager.Users.AnyAsync(u =>
+                 u.UserName == username || u.Email == email || u.PhoneNumber == phoneNumber);
         }
       
         public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto)
@@ -77,12 +59,14 @@ namespace BlogIT.Services
                 return IdentityResult.Failed(userRole.Errors.ToArray());
             }
 
+            await _context.SaveChangesAsync();
             await transaction.CommitAsync();
             _logger.LogInformation("User {Email} successfully registered and role assigned.", userRegisterDto.Email);
 
 
             return IdentityResult.Success;
         }
+
 
       
     }

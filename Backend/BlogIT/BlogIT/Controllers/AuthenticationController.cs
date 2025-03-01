@@ -65,7 +65,7 @@ namespace BlogIT.Controllers
             }
             catch(Exception ex)
             {
-                return StatusCode(500, "An error occurred while processing your registration.");
+                return StatusCode(500, ex);
             }
 
         }
@@ -94,7 +94,7 @@ namespace BlogIT.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             _tokenStorageService.RevokeCookies();
             return NoContent();

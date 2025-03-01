@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogIT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250227215745_InitialRoles")]
+    [Migration("20250301123054_InitialRoles")]
     partial class InitialRoles
     {
         /// <inheritdoc />
@@ -153,20 +153,6 @@ namespace BlogIT.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "6a35b1e2-2094-4cd4-a263-5a00fd2f60ce",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "e5b5b221-c9e2-41f6-a4a1-c6463cf987fa",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

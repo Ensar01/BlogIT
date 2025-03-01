@@ -14,12 +14,13 @@ namespace BlogIT.Migrations
         {
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "6a35b1e2-2094-4cd4-a263-5a00fd2f60ce", null, "Admin", "ADMIN" },
-                    { "e5b5b221-c9e2-41f6-a4a1-c6463cf987fa", null, "User", "USER" }
-                });
+                columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
+                values: new object[] { Guid.NewGuid().ToString(), "Admin", "ADMIN", Guid.NewGuid().ToString() });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
+                values: new object[] { Guid.NewGuid().ToString(), "User", "USER", Guid.NewGuid().ToString() });
         }
 
         /// <inheritdoc />
@@ -27,13 +28,13 @@ namespace BlogIT.Migrations
         {
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "6a35b1e2-2094-4cd4-a263-5a00fd2f60ce");
+                keyColumn: "Name",
+                keyValue: "Admin");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "e5b5b221-c9e2-41f6-a4a1-c6463cf987fa");
+                keyColumn: "Name",
+                keyValue: "User");
         }
     }
 }
