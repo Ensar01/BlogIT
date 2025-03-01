@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-registration',
   imports: [],
   templateUrl: './registration.component.html',
+  standalone: true,
   styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
