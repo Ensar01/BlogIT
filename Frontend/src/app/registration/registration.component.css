@@ -14,7 +14,7 @@ html, body {
 {
   width: 55%;
   height: 100%;
-  background-image: url("/assets/images/BlogIThero.png") ;
+  background-image: url("/assets/images/BlogIThero2.png") ;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -35,7 +35,7 @@ html, body {
   color: #474747;
   padding-top: 35px;
   padding-bottom: 10px;
-  font-weight:200;
+  font-weight: 400;
   margin-left: 5%;
 }
 #hero-description
