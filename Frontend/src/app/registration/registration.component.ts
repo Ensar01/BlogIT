@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
 
 @Component({
   selector: 'app-registration',
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    ReactiveFormsModule
   ],
   templateUrl: './registration.component.html',
   standalone: true,
@@ -13,7 +15,11 @@ import {NgOptimizedImage} from '@angular/common';
 })
 
 export class RegistrationComponent {
-  constructor() { }
+  registrationForm = new FormGroup({
+    username: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl('')
+  });
 
 
 
