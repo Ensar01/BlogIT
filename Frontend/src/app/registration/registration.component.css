@@ -32,9 +32,9 @@ html, body {
 }
 .Logo
 {
-  margin-left: 5%;
   width: 42%;
   height: auto;
+  margin-left: 5%;
 }
 #hero-title
 {
@@ -44,6 +44,7 @@ html, body {
   padding-bottom: 10px;
   font-weight: 400;
   margin-left: 5%;
+
 }
 #hero-description
 {
@@ -51,4 +52,162 @@ html, body {
   font-weight: 20;
   margin-left: 6%;
 }
+.Register
+{
+  width: 45%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: initial;
+  text-align: left;
+  padding-left: 4rem;
+}
+#register-title
+{
+  font-size: 45px;
+  color: #474747;
+  padding-bottom: 50px;
+  font-weight: 400;
+  align-self: flex-start;
 
+}
+.form__group {
+  position: relative;
+  padding: 40px 0 0px;
+  width: 90%;
+
+}
+
+.form__group--inline {
+  display: inline-block;
+  width: 48%; /* Da polja budu pored */
+  margin-right: 4%;
+}
+
+.form__group--inline:last-child {
+  margin-right: 0;
+}
+
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 20px;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  color: #474747;
+
+}
+
+.form__field::placeholder {
+  color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 17px;
+  cursor: text;
+  top: 45px;
+}
+
+.form__label {
+  position: absolute;
+  top: 20px;
+  display: block;
+  transition: 0.2s;
+  font-size: 17px;
+  color: #474747;
+  pointer-events: none;
+}
+
+.form__field:focus {
+  padding-bottom: 8px;
+  font-weight: 600;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #61C08B, #a4adaf);
+  border-image-slice: 1;
+}
+
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 10px;
+  display: block;
+  transition: 0.2s;
+  font-size: 17px;
+  color: #61C08B;
+  font-weight: 600;
+}
+
+/* reset input */
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
+}
+.button {
+  border: none;
+  width: 90%;
+  background-image: linear-gradient(135deg, #40df88 0%, #50e18e 20%, #eae3e3 100%);
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 17px;
+  padding: 0.6em 1.5em;
+  transition: scale 0.2s ease;
+  color: #474747;
+  margin-top: 3%;
+}
+
+.button:hover {
+  cursor: pointer;
+  -webkit-animation: pulse 1.5s infinite;
+  animation: pulse512 1.5s infinite;
+}
+
+.button:active {
+  scale: 0.95;
+}
+
+@keyframes pulse512 {
+  0% {
+    box-shadow: 0 0 0 0 rgba(44, 232, 95, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(218, 03, 8,  0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(218, 03, 8,  0);
+  }
+}
+
+.form-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  width: 90%;
+}
+
+.form-separator hr {
+  flex: 1;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+.form-separator span {
+  padding: 0 10px;
+  color: #aaa;
+}
+#login-text
+{
+  width: 90%;
+  text-align: center;
+  color: #474747;
+
+}
+#login-link
+{
+  text-decoration: none;
+}

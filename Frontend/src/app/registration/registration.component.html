@@ -15,7 +15,47 @@
   <h1 id = "hero-title">Tehnologija, znanje, inspiracija</h1>
   <h3 id="hero-description">Pišite, čitajte i širite svoje znanje u svijetu IT-a</h3>
 </div>
+<div class="Register">
+  <h1 id = "register-title">Registruj se</h1>
+  <form [formGroup]="registerForm">
+    <div class="form__group field">
+      <div class="form__group--inline">
+        <input type="text" id="firstName" class="form__field" formControlName="firstName" placeholder="Ime" required />
+        <label for="firstName" class="form__label">Ime</label>
+      </div>
 
+      <div class="form__group--inline">
+        <input type="text" id="lastName" class="form__field" formControlName="lastName" placeholder="Prezime" required />
+        <label for="lastName" class="form__label">Prezime</label>
+      </div>
+    </div>
+    <div class="form__group field">
+      <input type="email" id="email" class="form__field" formControlName="email" placeholder="Email" required />
+      <label for="email" class="form__label">Email</label>
+    </div>
+
+    <div class="form__group field">
+      <div class="form__group--inline">
+        <input type="text" id="username" class="form__field" formControlName="username" placeholder="Korisničko ime" required />
+        <label for="username" class="form__label">Korisničko ime</label>
+      </div>
+
+      <div class="form__group--inline">
+        <input type="password" id="password" class="form__field" formControlName="password" placeholder="Lozinka" required />
+        <label for="password" class="form__label">Lozinka</label>
+      </div>
+    </div>
+  </form>
+  <button class="button">
+    Registruj se
+  </button>
+  <div class="form-separator">
+    <hr />
+    <span>or</span>
+    <hr />
+  </div>
+  <p id="login-text">Već imate račun? <a id="login-link" routerLink="/login">Prijavite se</a></p>
+</div>
 </div>
 </body>
 
