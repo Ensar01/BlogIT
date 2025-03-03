@@ -15,11 +15,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 })
 
 export class RegistrationComponent {
-  registrationForm = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl('')
-  });
+  
 
 
 
