@@ -43,12 +43,12 @@ namespace BlogIT.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                if (await _userService.UserExists(userRegisterDto.UserName, userRegisterDto.PhoneNumber, userRegisterDto.Email))
+                if (await _userService.UserExists(userRegisterDto.UserName, userRegisterDto.Email))
                 {
                     return BadRequest(new ValidationProblemDetails
                     {
                         Title = "Validation Error",
-                        Detail = "A user with this username, email, or phone number already exists.",
+                        Detail = "A user with this username or email already exists.",
                         Status = StatusCodes.Status400BadRequest
                     });
                 }
@@ -140,7 +140,6 @@ namespace BlogIT.Controllers
                     Email = "testusersss@example.com",
                     Name = "Test",
                     LastName = "User",
-                    BirthDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-25)), // Example birthdate
                     RegistrationDate = DateOnly.FromDateTime(DateTime.Now)
                 };
 

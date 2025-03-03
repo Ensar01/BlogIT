@@ -19,11 +19,11 @@ namespace BlogIT.Services
             _logger = logger;
         }
 
-        public async Task<bool> UserExists(string username, string phoneNumber, string email)
+        public async Task<bool> UserExists(string username, string email)
         {
 
             return await _userManager.Users.AnyAsync(u =>
-                 u.UserName == username || u.Email == email || u.PhoneNumber == phoneNumber);
+                 u.UserName == username || u.Email == email );
         }
       
         public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto)
@@ -33,10 +33,9 @@ namespace BlogIT.Services
             {
                 Name = userRegisterDto.Name,
                 LastName = userRegisterDto.LastName,
-                BirthDate = userRegisterDto.BirthDate,
                 UserName = userRegisterDto.UserName,
                 Email = userRegisterDto.Email,
-                PhoneNumber = userRegisterDto.PhoneNumber
+                RegistrationDate = DateOnly.FromDateTime(DateTime.Now)
             };
 
             var createUser = await _userManager.CreateAsync(user, userRegisterDto.Password);
