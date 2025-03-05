@@ -81,8 +81,9 @@ html, body {
 
 .form__group--inline {
   display: inline-block;
-  width: 48%; /* Da polja budu pored */
+  width: 48%;
   margin-right: 4%;
+  vertical-align: top;
 }
 
 .form__group--inline:last-child {
@@ -133,7 +134,7 @@ html, body {
 
 .form__field:focus ~ .form__label {
   position: absolute;
-  top: 10px;
+  top: 16px;
   display: block;
   transition: 0.2s;
   font-size: 17px;
@@ -148,7 +149,7 @@ html, body {
 .button {
   border: none;
   width: 90%;
-  background-image: linear-gradient(135deg, #40df88 0%, #50e18e 20%, #eae3e3 100%);
+  background-image: linear-gradient(135deg, #86e4ad 0%, #84e3ac 20%, #f3eded 100%);
   border-radius: 20px;
   font-family: inherit;
   font-size: 17px;
@@ -210,4 +211,16 @@ html, body {
 #login-link
 {
   text-decoration: none;
+  color: #61C08B;
+}
+#login-link:active
+{
+
+  color: #9b9b9b;
+}
+.text-error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px; 
+  display: block;
 }
