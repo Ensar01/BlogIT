@@ -3,7 +3,7 @@
 namespace BlogIT.DataTransferObjects
 {
     public record UserRegisterDto(
-    [Required] string Name,
+    [Required] string FirstName,
     [Required] string LastName,
     [Required] string UserName,
     [Required][EmailAddress] string Email,

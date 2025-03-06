@@ -31,7 +31,7 @@ namespace BlogIT.Services
             await using var transaction = await _context.Database.BeginTransactionAsync();
             var user = new User
             {
-                Name = userRegisterDto.Name,
+                Name = userRegisterDto.FirstName,
                 LastName = userRegisterDto.LastName,
                 UserName = userRegisterDto.UserName,
                 Email = userRegisterDto.Email,
