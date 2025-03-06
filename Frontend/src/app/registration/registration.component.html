@@ -21,7 +21,7 @@
     <div class="form__group field">
       <div class="form__group--inline">
         <input type="text" id="firstName" class="form__field" formControlName="firstName" placeholder="Ime" required />
-        <label for="firstName" class="form__label">Ime</label>
+        <label for="firstName" class="form__label">Ime*</label>
         <div class = "text-error" *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched">
           <div *ngIf="registerForm.controls['firstName'].hasError('required')">
             Ime je obavezno!
@@ -34,7 +34,7 @@
 
       <div class="form__group--inline">
         <input type="text" id="lastName" class="form__field" formControlName="lastName" placeholder="Prezime" required />
-        <label for="lastName" class="form__label">Prezime</label>
+        <label for="lastName" class="form__label">Prezime*</label>
         <div class = "text-error" *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched">
           <div *ngIf="registerForm.controls['lastName'].hasError('required')">
             Prezime je obavezno!
@@ -48,7 +48,7 @@
     </div>
     <div class="form__group field">
       <input type="email" id="email" class="form__field" formControlName="email" placeholder="Email" required />
-      <label for="email" class="form__label">Email</label>
+      <label for="email" class="form__label">Email*</label>
       <div class = "text-error" *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
         <div *ngIf="registerForm.controls['email'].hasError('required')">
           Email je obavezan!
@@ -63,7 +63,7 @@
     <div class="form__group field">
       <div class="form__group--inline">
         <input type="text" id="username" class="form__field" formControlName="username" placeholder="Korisničko ime" required />
-        <label for="username" class="form__label">Korisničko ime</label>
+        <label for="username" class="form__label">Korisničko ime*</label>
         <div class = "text-error" *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched">
           Unesite validno korisničko ime! (minimalno 7 slova).
         </div>
@@ -71,7 +71,7 @@
 
       <div class="form__group--inline">
         <input type="password" id="password" class="form__field" formControlName="password" placeholder="Lozinka" required />
-        <label for="password" class="form__label">Lozinka</label>
+        <label for="password" class="form__label">Lozinka*</label>
         <div class = "text-error" *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
           <div *ngIf="registerForm.controls['password'].hasError('required')">
             Lozinka je obavezna!
