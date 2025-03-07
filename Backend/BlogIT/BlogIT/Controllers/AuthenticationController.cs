@@ -126,6 +126,21 @@ namespace BlogIT.Controllers
 
             return Ok();
         }
+        [HttpGet]
+        public async Task<bool> CheckAvailability (string? email, string?username)
+        {
+            if(!string.IsNullOrEmpty(email))
+            {
+                return await _context.User.AnyAsync(u => u.Email == email);
+            }
+            if (!string.IsNullOrEmpty(username))
+            {
+                return await _context.User.AnyAsync(u => u.UserName == username);
+            }
+
+            return false;
+        }
+            
        
         [HttpPut]
         public async Task SeedAsync()

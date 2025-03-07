@@ -1,10 +1,16 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  AsyncValidator,
+  AsyncValidatorFn, AbstractControl
+} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import {AuthenticationService} from '../Services/AuthenticationService';
-
-
+import {debounceTime, Observable} from 'rxjs';
 
 
 
@@ -22,16 +28,27 @@ import {AuthenticationService} from '../Services/AuthenticationService';
 })
 
 export class RegistrationComponent {
+
   public registerForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    username: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)])
+    firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+    lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+    username: new FormControl('', {updateOn:'blur', validators: [Validators.required, Validators.minLength(6),Validators.maxLength(20)],
+      asyncValidators: [this.asyncFieldValidator("username")]}),
+    email: new FormControl('', {updateOn: 'blur',validators: [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+     asyncValidators: [this.asyncFieldValidator("email")]}),
+    password: new FormControl('', [Validators.required, Validators.minLength(8),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)])
   })
   constructor(private authenticationService: AuthenticationService)  {
   }
 
+  asyncFieldValidator(type: 'username' | 'email'):AsyncValidatorFn {
+    return (control: AbstractControl): Observable<any> => {
+      const value = control.value;
+      debounceTime(1000);
+      return this.authenticationService.genericAsyncValidator(type, value);
+    };
+  }
 
   registerUser() {
     this.registerForm.markAllAsTouched();
