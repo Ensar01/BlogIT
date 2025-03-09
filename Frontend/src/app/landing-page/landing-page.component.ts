@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [],
+  standalone:true,
+  imports: [
+    NgOptimizedImage
+  ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })

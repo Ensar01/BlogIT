@@ -159,6 +159,7 @@ html, body {
   margin-top: 3%;
 }
 
+
 .button:hover {
   cursor: pointer;
   -webkit-animation: pulse 1.5s infinite;
@@ -221,6 +222,6 @@ html, body {
 .text-error {
   color: red;
   font-size: 12px;
-  margin-top: 5px; 
+  margin-top: 5px;
   display: block;
 }
