@@ -21,7 +21,7 @@ html, body {
 {
   width: 55%;
   height: 100%;
-  background-image: url("/assets/images/BlogIThero4.png") ;
+  background-image: url("/assets/images/color4bg_2025-03-09 22_41_46.png") ;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -32,13 +32,13 @@ html, body {
 }
 .Logo
 {
-  width: 42%;
+  width: 320px;
   height: auto;
   margin-left: 5%;
 }
 #hero-title
 {
-  font-size: 45px;
+  font-size: 50px;
   color: #474747;
   padding-top: 35px;
   padding-bottom: 10px;
@@ -48,9 +48,10 @@ html, body {
 }
 #hero-description
 {
+  font-size: 30px;
   color: #474747;
   font-weight: 20;
-  margin-left: 6%;
+  margin-left: 5%;
 }
 .Register
 {
