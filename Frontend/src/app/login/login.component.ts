@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +10,14 @@ import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
     NgOptimizedImage,
     FormsModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
+
 
 }

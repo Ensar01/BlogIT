@@ -14,7 +14,7 @@ html, body {
 .wrapper{
   width: 100%;
   height: 100%;
-  background-image: url("/assets/images/Homepage5.png");
+  background-image: url("/assets/images/Landing-page.png");
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;

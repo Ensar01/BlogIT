@@ -21,7 +21,7 @@ html, body {
 {
   width: 55%;
   height: 100%;
-  background-image: url("/assets/images/color4bg_2025-03-09 22_41_46.png") ;
+  background-image: url("/assets/images/BlogITHero.png") ;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -208,16 +208,16 @@ html, body {
   width: 90%;
   text-align: center;
   color: #474747;
-
+  font-size: 17px;
 }
 #login-link
 {
   text-decoration: none;
   color: #40df88;
+
 }
 #login-link:active
 {
-
   color: #9b9b9b;
 }
 .text-error {
