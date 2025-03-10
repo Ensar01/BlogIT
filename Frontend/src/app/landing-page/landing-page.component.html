@@ -2,7 +2,7 @@
   <div class = "nav-bar">
     <div class="nav-content">
       <a id="login-link" routerLink="/login">Prijavi se</a>
-      <button class="button" id="button1" (click)="openRegistrationPage()">
+      <button class="button" id="button1" routerLink="/register">
         Registruj se
       </button>
     </div>
@@ -11,7 +11,7 @@
     <img class="Logo" ngSrc="/assets/images/BlogITLogo.png" height="206" width="548">
     <h1 id = "hero-title">Tehnologija, znanje i inspiracija</h1>
     <h3 id="hero-description">Pišite, čitajte i širite svoje znanje u svijetu IT-a</h3>
-    <button class="button" (click)="openRegistrationPage()">
+    <button class="button" routerLink="/register">
       Podijeli svoje misli
     </button>
   </div>

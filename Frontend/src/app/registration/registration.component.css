@@ -32,7 +32,7 @@ html, body {
 }
 .Logo
 {
-  width: 320px;
+  width: 350px;
   height: auto;
   margin-left: 5%;
 }
@@ -150,13 +150,13 @@ html, body {
 .button {
   border: none;
   width: 90%;
-  background-image: linear-gradient(135deg, #86e4ad 0%, #84e3ac 20%, #f3eded 100%);
+  background-color: #474747;
   border-radius: 20px;
   font-family: inherit;
   font-size: 17px;
   padding: 0.6em 1.5em;
   transition: scale 0.2s ease;
-  color: #474747;
+  color: white;
   margin-top: 3%;
 }
 
@@ -173,7 +173,7 @@ html, body {
 
 @keyframes pulse512 {
   0% {
-    box-shadow: 0 0 0 0 rgba(44, 232, 95, 0.4);
+    box-shadow: 0 0 0 0 rgb(71, 71, 71);
   }
 
   70% {
@@ -213,7 +213,7 @@ html, body {
 #login-link
 {
   text-decoration: none;
-  color: #61C08B;
+  color: #40df88;
 }
 #login-link:active
 {

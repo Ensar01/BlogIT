@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
-import {Router, RouterLink} from "@angular/router";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-landing-page',
@@ -13,10 +13,8 @@ import {Router, RouterLink} from "@angular/router";
   styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
-  constructor(private router: Router) {
+  constructor() {
   }
 
-  openRegistrationPage() {
-    this.router.navigate(['/register']);
-  }
+
 }
