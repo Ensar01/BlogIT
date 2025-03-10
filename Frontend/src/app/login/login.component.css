@@ -13,7 +13,7 @@ html, body {
 .wrapper{
   width: 100%;
   height: 100%;
-  background-image: url("/assets/images/Homepage.png");
+  background-image: url("/assets/images/Login-page.png");
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
@@ -21,7 +21,7 @@ html, body {
   align-items: center;
 }
 .login-section {
-  background-color: #fdfdfd;
+
   width: 30%;
   height: auto;
   display: flex;
