@@ -16,15 +16,14 @@ html, body {
   height: 100%;
   display: flex;
   flex-direction: row;
+  background-image: url("/assets/images/Register-page.png") ;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 #Hero
 {
   width: 55%;
   height: 100%;
-  background-image: url("/assets/images/BlogITHero.png") ;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
   display: flex;
   flex-direction: column;
   justify-content: center;
