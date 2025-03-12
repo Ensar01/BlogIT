@@ -13,7 +13,7 @@ namespace BlogIT.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class AuthenticationController : Controller
+    public class AuthController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
@@ -22,7 +22,7 @@ namespace BlogIT.Controllers
         private readonly ITokenStorageService _tokenStorageService;
         private readonly AuthService _authService;
         private readonly UserService _userService;
-        public AuthenticationController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService,
+        public AuthController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService,
             AuthService refreshTokenService, ITokenStorageService tokenStorageService, UserService userService)
         {
             _context = context;

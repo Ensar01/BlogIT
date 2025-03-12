@@ -3,7 +3,7 @@ import {environment} from '../enviroment';
 export const API_ENDPOINTS =
   {
     authentication: {
-      register:`${environment.apiBaseUrl}/Authentication/Register`,
-      checkAvailability: `${environment.apiBaseUrl}/Authentication/CheckAvailability`,
+      register:`${environment.apiBaseUrl}/Auth/Register`,
+      checkAvailability: `${environment.apiBaseUrl}/Auth/CheckAvailability`,
     }
   }
