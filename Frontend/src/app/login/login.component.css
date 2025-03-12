@@ -50,6 +50,77 @@ html, body {
   color: #474747;
   font-weight: 20;
 }
+.login-form{
+  padding: 30px 0;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+.form__group {
+  position: relative;
+  padding: 40px 0 0px;
+  width: 90%;
+
+}
+
+
+
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 20px;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  color: #474747;
+
+}
+
+.form__field::placeholder {
+  color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 17px;
+  cursor: text;
+  top: 45px;
+}
+
+.form__label {
+  position: absolute;
+  top: 20px;
+  display: block;
+  transition: 0.2s;
+  font-size: 17px;
+  color: #474747;
+  pointer-events: none;
+}
+
+.form__field:focus {
+  padding-bottom: 8px;
+  font-weight: 600;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #61C08B, #a4adaf);
+  border-image-slice: 1;
+}
+
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 16px;
+  display: block;
+  transition: 0.2s;
+  font-size: 17px;
+  color: #61C08B;
+  font-weight: 600;
+}
+
+/* reset input */
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
+}
 .button {
   border: none;
   width: 90%;

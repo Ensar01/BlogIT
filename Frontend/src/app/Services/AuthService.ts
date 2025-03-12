@@ -7,7 +7,7 @@ import {API_ENDPOINTS} from '../api-endpoints';
 @Injectable({
   providedIn: 'root'
   })
-export  class AuthenticationService {
+export  class AuthService {
   constructor(private http: HttpClient) {
   }
 
@@ -15,9 +15,13 @@ export  class AuthenticationService {
     const url = API_ENDPOINTS.authentication.register;
     return this.http.post(url, userData);
   }
+  login(userData: any): Observable<any> {
+    const url = API_ENDPOINTS.authentication.login;
+    return this.http.post(url, userData,{ responseType: 'json' });
+  }
   checkAvailability(email?: string, username?:string): Observable<boolean> {
 
-    const url = API_ENDPOINTS.authentication.checkAvailability;
+    const url = API_ENDPOINTS.authentication.exists;
     const params: any = {};
     if(email) params.email = email;
     if(username) params.username = username;

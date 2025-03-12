@@ -9,7 +9,7 @@ import {
   AsyncValidatorFn, AbstractControl
 } from '@angular/forms';
 import {RouterLink} from '@angular/router';
-import {AuthenticationService} from '../Services/AuthenticationService';
+import {AuthService} from '../Services/AuthService';
 import {debounceTime, Observable} from 'rxjs';
 
 
@@ -39,14 +39,14 @@ export class RegistrationComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(8),
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)])
   })
-  constructor(private authenticationService: AuthenticationService)  {
+  constructor(private authService: AuthService)  {
   }
 
   asyncFieldValidator(type: 'username' | 'email'):AsyncValidatorFn {
     return (control: AbstractControl): Observable<any> => {
       const value = control.value;
       debounceTime(1000);
-      return this.authenticationService.genericAsyncValidator(type, value);
+      return this.authService.genericAsyncValidator(type, value);
     };
   }
 
@@ -56,7 +56,7 @@ export class RegistrationComponent {
       return;
     }
 
-    this.authenticationService.register(this.registerForm.value).subscribe(
+    this.authService.register(this.registerForm.value).subscribe(
       response => console.log(response),
       error => console.log(error)
     )

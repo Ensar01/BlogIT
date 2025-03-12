@@ -4,6 +4,7 @@ export const API_ENDPOINTS =
   {
     authentication: {
       register:`${environment.apiBaseUrl}/Auth/Register`,
-      checkAvailability: `${environment.apiBaseUrl}/Auth/CheckAvailability`,
+      exists: `${environment.apiBaseUrl}/Auth/Exists`,
+      login: `${environment.apiBaseUrl}/Auth/Login`,
     }
   }

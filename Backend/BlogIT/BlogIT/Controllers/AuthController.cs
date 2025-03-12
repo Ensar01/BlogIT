@@ -89,7 +89,7 @@ namespace BlogIT.Controllers
 
             _tokenStorageService.SetTokens(AuthTokenDto);
 
-            return Ok();
+            return Ok(new { message = "doba" });
         }
 
         [Authorize]
@@ -127,7 +127,7 @@ namespace BlogIT.Controllers
             return Ok();
         }
         [HttpGet]
-        public async Task<bool> CheckAvailability (string? email, string?username)
+        public async Task<bool> Exists (string? email, string?username)
         {
             if(!string.IsNullOrEmpty(email))
             {

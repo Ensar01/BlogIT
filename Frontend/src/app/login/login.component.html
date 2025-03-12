@@ -4,10 +4,17 @@
     <img class="Logo" ngSrc="/assets/images/BlogITLogo.png" height="206" width="548">
     <h1 id = "login-title">Prijavi se</h1>
     <h3 id="login-description">Dobrodošli nazad</h3>
-
-
-
-    <button class="button" >
+    <form class="login-form" [formGroup]="loginForm" >
+      <div class="form__group field">
+          <input type="text" id="username" class="form__field" formControlName="username" placeholder="username" required />
+          <label for="username" class="form__label">Username</label>
+      </div>
+      <div class="form__group field">
+        <input type="text" id="password" class="form__field" formControlName="password" placeholder="lozinka" required />
+        <label for="password" class="form__label">Lozinka</label>
+      </div>
+    </form>
+    <button class="button" (click)="loginUser()">
       Prijavi se
     </button>
     <p id="register-text">Nemate račun? <a id="register-link" routerLink="/register">Registruj se</a></p>
