@@ -22,7 +22,7 @@ html, body {
 }
 .login-section {
 
-  width: 30%;
+  width: 40%;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@ html, body {
 }
 .Logo
 {
-  width: 250px;
+  width: 40%;
   height: auto;
 }
 #login-title
@@ -40,9 +40,7 @@ html, body {
   font-size: 35px;
   color: #474747;
   padding-top: 20px;
-
   font-weight: 400;
-
 }
 #login-description
 {
@@ -59,7 +57,7 @@ html, body {
 .form__group {
   position: relative;
   padding: 40px 0 0px;
-  width: 90%;
+  width: 65%;
 
 }
 
@@ -123,7 +121,7 @@ html, body {
 }
 .button {
   border: none;
-  width: 90%;
+  width:65%;
   background-color: #474747;
   border-radius: 20px;
   font-family: inherit;

@@ -17,9 +17,9 @@ export  class AuthService {
   }
   login(userData: any): Observable<any> {
     const url = API_ENDPOINTS.authentication.login;
-    return this.http.post(url, userData,{ responseType: 'json' });
+    return this.http.post(url, userData,{ withCredentials: true });
   }
-  checkAvailability(email?: string, username?:string): Observable<boolean> {
+  exists(email?: string, username?:string): Observable<boolean> {
 
     const url = API_ENDPOINTS.authentication.exists;
     const params: any = {};
@@ -30,7 +30,7 @@ export  class AuthService {
   }
 
   genericAsyncValidator(type: 'username' | 'email', value: string): Observable<any> {
-    return this.checkAvailability(type === 'username' ? undefined : value, type==='email'? undefined : value)
+    return this.exists(type === 'username' ? undefined : value, type==='email'? undefined : value)
       .pipe(
         switchMap(exists => {
         return exists ? of ({ [`${type}Taken`]: true }) : of(null);
