@@ -26,7 +26,7 @@
       </div>
 
       <div class="form__group--inline">
-        <input type="text" id="lastName" class="form__field" formControlName="lastName" placeholder="Prezime" required />
+        <input type="text" id="lastName" class="form__field" formControlName="lastName" placeholder="Prezime" />
         <label for="lastName" class="form__label">Prezime*</label>
         <div class = "text-error" *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched">
           <div *ngIf="registerForm.controls['lastName'].hasError('required')">

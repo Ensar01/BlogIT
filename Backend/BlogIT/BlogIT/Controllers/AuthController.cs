@@ -43,7 +43,7 @@ namespace BlogIT.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                if (await _userService.UserExists(userRegisterDto.UserName, userRegisterDto.Email))
+                if (await _userService.UserExists(userRegisterDto.Email, userRegisterDto.UserName))
                 {
                     return BadRequest(new ValidationProblemDetails
                     {
@@ -130,20 +130,7 @@ namespace BlogIT.Controllers
 
             return Ok();
         }
-        [HttpGet]
-        public async Task<bool> Exists (string? email, string?username)
-        {
-            if(!string.IsNullOrEmpty(email))
-            {
-                return await _context.User.AnyAsync(u => u.Email == email);
-            }
-            if (!string.IsNullOrEmpty(username))
-            {
-                return await _context.User.AnyAsync(u => u.UserName == username);
-            }
-
-            return false;
-        }
+       
             
        
         [HttpPut]

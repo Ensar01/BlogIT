@@ -1,5 +1,7 @@
 ﻿using BlogIT.Data;
+using BlogIT.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogIT.Controllers
 {
@@ -8,11 +10,17 @@ namespace BlogIT.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public UserController(ApplicationDbContext context)
+        private readonly UserService _userService;
+        public UserController(ApplicationDbContext context, UserService userService)
         {
             _context = context;
+            _userService = userService;
             
         }
-        
+        [HttpGet]
+        public async Task<bool> Exists(string? email, string? username)
+        {
+            return await _userService.UserExists(email, username);
+        }
     }
 }

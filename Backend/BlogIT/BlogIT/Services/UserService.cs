@@ -19,12 +19,13 @@ namespace BlogIT.Services
             _logger = logger;
         }
 
-        public async Task<bool> UserExists(string username, string email)
+        public async Task<bool> UserExists(string email, string username)
         {
 
             return await _userManager.Users.AnyAsync(u =>
                  u.UserName == username || u.Email == email );
         }
+      
       
         public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto)
         {
