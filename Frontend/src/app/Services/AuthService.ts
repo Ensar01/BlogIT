@@ -21,7 +21,7 @@ export  class AuthService {
   }
   exists(email?: string, username?:string): Observable<boolean> {
 
-    const url = API_ENDPOINTS.authentication.exists;
+    const url = API_ENDPOINTS.user.exists;
     const params: any = {};
     if(email) params.email = email;
     if(username) params.username = username;
