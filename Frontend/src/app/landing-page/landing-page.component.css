@@ -24,7 +24,7 @@ html, body {
 }
 .Logo
 {
-  width: 25%;
+  width: 35vh;
   height: auto;;
 }
 .nav-bar
@@ -54,7 +54,7 @@ html, body {
 
 #hero-title
 {
-  font-size: 75px;
+  font-size: 8vh;
   color: #474747;
   padding-top: 35px;
   padding-bottom: 10px;
@@ -64,7 +64,7 @@ html, body {
 }
 #hero-description
 {
-  font-size: 35px;
+  font-size: 3vh;
   color: #474747;
   font-weight: 20;
 

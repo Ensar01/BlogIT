@@ -31,13 +31,13 @@ html, body {
 }
 .Logo
 {
-  width: 350px;
+  width: 34vh;
   height: auto;
   margin-left: 5%;
 }
 #hero-title
 {
-  font-size: 50px;
+  font-size: 6vh;
   color: #474747;
   padding-top: 35px;
   padding-bottom: 10px;
@@ -47,7 +47,7 @@ html, body {
 }
 #hero-description
 {
-  font-size: 30px;
+  font-size: 3vh;
   color: #474747;
   font-weight: 20;
   margin-left: 5%;
@@ -65,7 +65,7 @@ html, body {
 }
 #register-title
 {
-  font-size: 45px;
+  font-size: 6vh;
   color: #474747;
   padding-bottom: 50px;
   font-weight: 400;
