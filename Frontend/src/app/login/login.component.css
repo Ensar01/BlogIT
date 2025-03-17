@@ -56,12 +56,10 @@ html, body {
 }
 .form__group {
   position: relative;
-  padding: 40px 0 0px;
+  padding: 40px 0 0;
   width: 65%;
 
 }
-
-
 
 .form__field {
   font-family: inherit;

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterLink} from '@angular/router';
-import {AuthService} from '../Services/AuthService';
+import {AuthService} from '../services/authService';
 
 @Component({
   selector: 'app-login',

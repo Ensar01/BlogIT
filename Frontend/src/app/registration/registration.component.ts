@@ -9,7 +9,7 @@ import {
   AsyncValidatorFn, AbstractControl
 } from '@angular/forms';
 import {RouterLink} from '@angular/router';
-import {AuthService} from '../Services/AuthService';
+import {AuthService} from '../services/authService';
 import {debounceTime, Observable} from 'rxjs';
 
 
