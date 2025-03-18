@@ -19,6 +19,14 @@ export  class AuthService {
     const url = API_ENDPOINTS.authentication.login;
     return this.http.post(url, userData,{ withCredentials: true });
   }
+  refreshToken(): Observable<any> {
+    const url = API_ENDPOINTS.authentication.refreshToken;
+    return this.http.post(url,{withCredentials: true});
+  }
+  logout(): Observable<any>{
+    const url = API_ENDPOINTS.authentication.logout;
+    return this.http.post(url,{withCredentials: true});
+  }
   exists(email?: string, username?:string): Observable<boolean> {
 
     const url = API_ENDPOINTS.user.exists;

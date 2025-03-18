@@ -100,7 +100,7 @@ namespace BlogIT.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            _tokenStorageService.RevokeCookies();
+            _tokenStorageService.RevokeTokens();
             return NoContent();
         }
 

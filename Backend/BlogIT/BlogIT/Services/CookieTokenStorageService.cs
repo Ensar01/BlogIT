@@ -37,7 +37,7 @@ namespace BlogIT.Services
             });
         }
 
-        public void RevokeCookies()
+        public void RevokeTokens()
         {
             var context = _httpContextAccessor.HttpContext;
 
