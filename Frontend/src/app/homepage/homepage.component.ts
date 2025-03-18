@@ -8,7 +8,7 @@ import {Interceptor} from '../core/interceptor';
   standalone: true,
   imports: [],
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.css'
+  styleUrl: './homepage.component.css',
 })
 export class HomepageComponent {
   constructor(private authService: AuthService) {}

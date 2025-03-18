@@ -21,11 +21,11 @@ export  class AuthService {
   }
   refreshToken(): Observable<any> {
     const url = API_ENDPOINTS.authentication.refreshToken;
-    return this.http.post(url,{withCredentials: true});
+    return this.http.post(url,{},{withCredentials: true});
   }
   logout(): Observable<any>{
     const url = API_ENDPOINTS.authentication.logout;
-    return this.http.post(url,{withCredentials: true});
+    return this.http.post(url,{},{withCredentials: true});
   }
   exists(email?: string, username?:string): Observable<boolean> {
 
