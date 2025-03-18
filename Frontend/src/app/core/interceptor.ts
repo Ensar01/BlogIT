@@ -10,7 +10,7 @@ import {Injectable, Injector} from '@angular/core';
 import {Router} from '@angular/router';
 import {catchError, Observable, of} from 'rxjs';
 import {AuthService} from '../services/authService';
-import any = jasmine.any;
+
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
@@ -23,6 +23,7 @@ export class Interceptor implements HttpInterceptor {
   }
 
   private handleAuthError(err: HttpErrorResponse):Observable<any> {
+    debugger
     if(err && err.status === 401 && this.errCtr!=1) {
       this.errCtr++
       let authService = this.injector.get(AuthService);
@@ -41,8 +42,10 @@ export class Interceptor implements HttpInterceptor {
       });
       return  of("Attempting to refresh tokens")
     }else {
+      debugger
       this.errCtr = 0
       return of("Non auth error")
     }
+
   }
 }
