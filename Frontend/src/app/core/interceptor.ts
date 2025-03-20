@@ -1,51 +1,47 @@
 import {
-  HttpClient,
   HttpErrorResponse,
   HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
+  HttpHandlerFn,
+  HttpInterceptorFn,
   HttpRequest
 } from '@angular/common/http';
-import {Injectable, Injector} from '@angular/core';
-import {Router} from '@angular/router';
-import {catchError, Observable, of} from 'rxjs';
-import {AuthService} from '../services/authService';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, Observable, throwError, switchMap, of } from 'rxjs';
+import { AuthService } from '../services/authService';
 
+// Globalna varijabla za praćenje errora
+let errCtr = 0;
 
-@Injectable()
-export class Interceptor implements HttpInterceptor {
+export const Interceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
+  const router = inject(Router);
+  const authService = inject(AuthService);
 
-  constructor(private injector: Injector, private router: Router)  {
-  }
-  errCtr = 0
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(catchError(x=> this.handleAuthError(x)));
-  }
+  return next(req).pipe(
+    catchError((err: HttpErrorResponse) => {
+      if (err && err.status === 401 && errCtr != 1) {
+        errCtr++;
 
-  private handleAuthError(err: HttpErrorResponse):Observable<any> {
-    debugger
-    if(err && err.status === 401 && this.errCtr!=1) {
-      this.errCtr++
-      let authService = this.injector.get(AuthService);
-      authService.refreshToken().subscribe({
-        next: (x:any) => {
-          console.log("Token refreshed successfully");
-        },
-        error: (err:any) => {
-          authService.logout().subscribe({
-            next: (x:any) => {
-              this.router.navigateByUrl('/login');
-              return of(err.message);
-            }
+        return authService.refreshToken().pipe(
+          switchMap((x: any) => {
+            console.log("Token refreshed successfully");
+            // Ponovi originalni zahtjev
+            return next(req);
+          }),
+          catchError((refreshErr: any) => {
+            return authService.logout().pipe(
+              switchMap(() => {
+                router.navigateByUrl('/login');
+                errCtr = 0;
+                return throwError(() => err.message);
+              })
+            );
           })
-        }
-      });
-      return  of("Attempting to refresh tokens")
-    }else {
-      debugger
-      this.errCtr = 0
-      return of("Non auth error")
-    }
-
-  }
-}
+        );
+      } else {
+        errCtr = 0;
+        return throwError(() => err);
+      }
+    })
+  );
+};

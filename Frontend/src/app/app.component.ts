@@ -8,12 +8,7 @@ import {Interceptor} from './core/interceptor';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   standalone: true,
-  styleUrl: './app.component.css',
-  providers:[{
-    provide: HTTP_INTERCEPTORS,
-    useClass: Interceptor,
-    multi: true
-  }]
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'Frontend';
