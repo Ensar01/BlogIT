@@ -10,7 +10,6 @@ import {AuthService} from '../services/authService';
   imports: [
     NgOptimizedImage,
     FormsModule,
-    NgIf,
     ReactiveFormsModule,
     RouterLink
   ],
