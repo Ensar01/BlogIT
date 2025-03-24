@@ -25,7 +25,8 @@ html, body {
 {
   width: 14vh;
   height: auto;
-padding-top: 1%;
+  padding-top: 1%;
+  padding-right: 1%;
 }
 .nav-bar
 {
@@ -40,18 +41,18 @@ padding-top: 1%;
 }
 .nav-content
 {
-  width: 70%;
+  width: 80%;
   height: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   margin-left: 10%;
-  padding: 10px;
+
 }
 .nav-content1
 {
-  width: 12%;
+  width: 20%;
   height: auto;
   display: flex;
   flex-direction: row;
@@ -113,140 +114,53 @@ padding-top: 1%;
     box-shadow: 0 0 0 0 rgba(218, 03, 8,  0);
   }
 }
-.menu {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #474747;
-  width: fit-content;
-  display: flex;
-  list-style: none;
-}
-
-.menu a {
-  text-decoration: none;
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
-.menu .link {
+.container {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px 36px;
+  --size-button: 35px;
+  color: white;
+}
 
-  overflow: hidden;
+.input {
+  padding-left: var(--size-button);
+  height: var(--size-button);
+  font-size: 15px;
+  border: none;
+  color: #fff;
+  outline: none;
+  width: var(--size-button);
+  transition: all ease 0.3s;
+  background-image: linear-gradient(135deg, #40df88 0%, #50e18e 20%, #eae3e3 100%);
+  box-shadow: 1.5px 1.5px 3px #3b7f5f, -1.5px -1.5px 3px rgba(120, 226, 165, 0.25), inset 0px 0px 0px #3b7f5f, inset 0px -0px 0px #61c08b;
+  border-radius: 50px;
+  cursor: pointer;
 
 }
 
-.menu .link::after {
-  content: "";
+.input:focus,
+.input:not(:invalid) {
+  width: 400px;
+  cursor: text;
+  box-shadow: 1.5px 1.5px 3px #3b7f5f, -1.5px -1.5px 3px rgba(120, 226, 165, 0.25), inset 0px 0px 0px #3b7f5f, inset 0px -0px 0px #61c08b;
+
+}
+
+.input:focus + .icon,
+.input:not(:invalid) + .icon {
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.container .icon {
   position: absolute;
+  width: var(--size-button);
+  height: var(--size-button);
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.menu .link svg {
-  width: 14px;
-  height: 14px;
-  fill: #000000;
-  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.menu .item {
-  position: relative;
-}
-
-.menu .item .submenu {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: absolute;
-  top: 100%;
-  border-radius: 16px 16px 16px 16px;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  border: 1px solid #cccccc;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px);
-  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  z-index: 1;
+  padding: 8px;
   pointer-events: none;
-  list-style: none;
 }
 
-.menu .item:hover .submenu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  border-top: transparent;
-  border-color: rgba(64, 223, 136, 0.4);
-}
-
-.menu .item:hover .link {
-  color: #474747;
-  border-radius: 16px 16px 0 0;
-}
-
-.menu .item:hover .link::after {
-  transform: scaleX(1);
-  transform-origin: right;
-}
-
-.menu .item:hover .link svg {
-  fill: #ffffff;
-  transform: rotate(-180deg);
-}
-
-.submenu .submenu-item {
-  width: 100%;
-  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.submenu .submenu-link {
-  display: block;
-  padding: 12px 24px;
-  width: 100%;
-  position: relative;
-  text-align: center;
-  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.submenu .submenu-item:last-child .submenu-link {
-  border-bottom: none;
-}
-
-.submenu .submenu-link::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: scaleX(0);
+.container .icon svg {
   width: 100%;
   height: 100%;
-  background-color: rgba(64, 223, 136, 0.61);
-  z-index: -1;
-  transform-origin: left;
-  transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.submenu .submenu-link:hover:before {
-  transform: scaleX(1);
-  transform-origin: right;
-}
-
-.submenu .submenu-link:hover {
-  color: #ffffff;
 }
