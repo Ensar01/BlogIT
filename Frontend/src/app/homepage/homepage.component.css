@@ -63,11 +63,11 @@ html, body {
 
 .button {
   border: none;
-  width: 13em;
+  width: auto;
   background-color: #474747;
   border-radius: 20px;
   font-family: inherit;
-  font-size: 18px;
+  font-size: 15px;
   padding: 0.6em 1.5em;
   transition: scale 0.2s ease;
   color: #ffffff;
@@ -75,12 +75,7 @@ html, body {
   flex-shrink: 0;
   white-space: nowrap;
 }
-#button1 {
 
-  width: auto;
-  font-size: 15px;
-  margin-top: 0;
-}
 #login-link {
 
   text-decoration: none;
