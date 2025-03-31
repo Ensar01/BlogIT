@@ -25,7 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\BlogIT.Interfaces\BlogIT.Interfaces.csproj" />
+    <ProjectReference Include="..\BlogIT.Model\BlogIT.Model.csproj" />
+    <ProjectReference Include="..\BlogIT.Services\BlogIT.Services.csproj" />
   </ItemGroup>
 
 </Project>

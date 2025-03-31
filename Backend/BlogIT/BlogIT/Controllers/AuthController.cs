@@ -3,6 +3,7 @@ using BlogIT.Data;
 using BlogIT.Data.Models;
 using BlogIT.DataTransferObjects;
 using BlogIT.Interfaces;
+using BlogIT.Model.DataTransferObjects;
 using BlogIT.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -88,8 +89,8 @@ namespace BlogIT.Controllers
             {
                 return Unauthorized("Invalid credentials");
             }
-
-            var AuthTokenDto = await _authService.GenerateTokens(user);
+            var userTokenDto = new UserTokenDto(user.Email, user.UserName, user.Id);
+            var AuthTokenDto = await _authService.GenerateTokens(userTokenDto);
 
             _tokenStorageService.SetTokens(AuthTokenDto);
 

@@ -1,10 +1,10 @@
-﻿using BlogIT.Data.Models;
+﻿using BlogIT.Model.DataTransferObjects;
 
 namespace BlogIT.Interfaces
 {
     public interface ITokenService
     {
-        string GenerateToken(User user);
+        string GenerateToken(UserTokenDto user);
         string GenerateRefreshToken();
     }
 }
