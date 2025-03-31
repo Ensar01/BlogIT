@@ -1,5 +1,4 @@
-﻿using BlogIT.Data.Models;
-using BlogIT.Interfaces;
+﻿using BlogIT.Interfaces;
 using BlogIT.Model.DataTransferObjects;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -25,7 +24,7 @@ namespace BlogIT.Services
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+                new Claim(JwtRegisteredClaimNames.Sub, user.ID)
             };
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
 

@@ -21,7 +21,7 @@ namespace BlogIT.Services
         public async Task<RefreshToken> CreateOrUpdateRefreshToken(UserTokenDto user)
         {
             var refreshToken = await _context.RefreshTokens
-                .FirstOrDefaultAsync(r => r.UserId == user.Id);
+                .FirstOrDefaultAsync(r => r.UserId == user.ID);
 
             if (refreshToken != null)
             {
@@ -33,7 +33,7 @@ namespace BlogIT.Services
                 refreshToken = new RefreshToken
                 {
                     Id = Guid.NewGuid(),
-                    UserId = user.Id,
+                    UserId = user.ID,
                     Token = _tokenService.GenerateRefreshToken(),
                     ExpiresOn = DateTime.UtcNow.AddDays(7)
                 };

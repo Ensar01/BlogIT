@@ -1,8 +1,6 @@
-﻿using Azure;
-using BlogIT.DataTransferObjects;
+﻿using BlogIT.DataTransferObjects;
 using BlogIT.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BlogIT.Services
 {
