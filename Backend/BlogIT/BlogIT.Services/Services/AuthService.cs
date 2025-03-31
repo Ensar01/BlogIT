@@ -3,6 +3,7 @@ using BlogIT.Data;
 using BlogIT.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using BlogIT.DataTransferObjects;
+using BlogIT.Model.DataTransferObjects;
 
 namespace BlogIT.Services
 {
@@ -17,7 +18,7 @@ namespace BlogIT.Services
             _tokenService = tokenService;
         }
 
-        public async Task<RefreshToken> CreateOrUpdateRefreshToken(User user)
+        public async Task<RefreshToken> CreateOrUpdateRefreshToken(UserTokenDto user)
         {
             var refreshToken = await _context.RefreshTokens
                 .FirstOrDefaultAsync(r => r.UserId == user.Id);
@@ -43,7 +44,7 @@ namespace BlogIT.Services
             return refreshToken;
         }
         
-        public async Task<AuthTokensDto> GenerateTokens(User user)
+        public async Task<AuthTokensDto> GenerateTokens(UserTokenDto user)
         {
             string token = _tokenService.GenerateToken(user);
             var refreshToken = await CreateOrUpdateRefreshToken(user);

@@ -1,5 +1,7 @@
 ﻿using BlogIT.Data.Models;
 using BlogIT.Interfaces;
+using BlogIT.Model.DataTransferObjects;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,7 +19,7 @@ namespace BlogIT.Services
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
         }
-        public string GenerateToken(User user)
+        public string GenerateToken(UserTokenDto user)
         {
             var claims = new List<Claim>
             {

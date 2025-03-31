@@ -121,11 +121,12 @@ namespace BlogIT.Controllers
             }
 
             var user = tokenEntry.User;
+            var userTokenDto = new UserTokenDto(user.Email, user.UserName, user.Id);
 
             _context.RefreshTokens.Remove(tokenEntry);
             await _context.SaveChangesAsync();
 
-            var AuthTokenDto = await _authService.GenerateTokens(user);
+            var AuthTokenDto = await _authService.GenerateTokens(userTokenDto);
 
             _tokenStorageService.SetTokens(AuthTokenDto);
 
