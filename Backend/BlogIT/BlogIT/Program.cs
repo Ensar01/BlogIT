@@ -20,7 +20,7 @@ namespace BlogIT
             .Build();
 
             var builder = WebApplication.CreateBuilder(args);
-
+         
 
             // Add services to the container.
 
@@ -29,7 +29,8 @@ namespace BlogIT
             //builder.Services.AddOpenApi();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection"),
+                sqlOptions => sqlOptions.MigrationsAssembly("BlogIT")));
             builder.Services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequireUppercase = true;
