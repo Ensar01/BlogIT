@@ -3,6 +3,7 @@ import {RegistrationComponent} from './registration/registration.component';
 import {LandingPageComponent} from './landing-page/landing-page.component';
 import {LoginComponent} from './login/login.component';
 import {HomepageComponent} from './homepage/homepage.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'landing-page', pathMatch: 'full'},
@@ -10,4 +11,5 @@ export const routes: Routes = [
   {path: 'register',component: RegistrationComponent},
   {path: 'login',component: LoginComponent},
   {path: 'homepage', component: HomepageComponent},
+  {path: 'dashboard', component: DashboardComponent}
 ];

@@ -48,7 +48,6 @@ html, body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   margin-left: 10%;
   margin-right: 3%;
   padding-top: 10px;
@@ -120,6 +119,7 @@ html, body {
   align-items: center;
   position: relative;
   width: 60%;
+  margin-left: 3%;
 }
 
 .input {
