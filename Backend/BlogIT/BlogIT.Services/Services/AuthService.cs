@@ -4,53 +4,73 @@ using BlogIT.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using BlogIT.DataTransferObjects;
 using BlogIT.Model.DataTransferObjects;
+using Microsoft.AspNetCore.Identity;
+using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
+using BlogIT.Interfaces.Interfaces;
 
 namespace BlogIT.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ITokenService _tokenService;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<AuthService> _logger;
 
-        public AuthService(ApplicationDbContext context, ITokenService tokenService)
+        public AuthService(ApplicationDbContext context)
         {
             _context = context;
-            _tokenService = tokenService;
+           
+        }
+        public async Task<bool> UserExists(string email, string username)
+        {
+
+            return await _userManager.Users.AnyAsync(u =>
+                 u.UserName == username || u.Email == email);
+
         }
 
-        public async Task<RefreshToken> CreateOrUpdateRefreshToken(UserTokenDto user)
-        {
-            var refreshToken = await _context.RefreshTokens
-                .FirstOrDefaultAsync(r => r.UserId == user.ID);
 
-            if (refreshToken != null)
+        public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var user = new User
             {
-                refreshToken.Token = _tokenService.GenerateRefreshToken();
-                refreshToken.ExpiresOn = DateTime.UtcNow.AddDays(7);
+                Name = userRegisterDto.FirstName,
+                LastName = userRegisterDto.LastName,
+                UserName = userRegisterDto.UserName,
+                Email = userRegisterDto.Email,
+                RegistrationDate = DateOnly.FromDateTime(DateTime.Now)
+            };
+
+            var createUser = await _userManager.CreateAsync(user, userRegisterDto.Password);
+
+            if (!createUser.Succeeded)
+            {
+                _logger.LogError("User creation failed for {Email}: {Errors}", userRegisterDto.Email,
+                    string.Join(", ", createUser.Errors.Select(e => e.Description)));
+                return createUser;
             }
-            else
+
+            _logger.LogInformation("User {Email} created successfully. Assigning role...", userRegisterDto.Email);
+            var userRole = await _userManager.AddToRoleAsync(user, "User");
+
+            if (!userRole.Succeeded)
             {
-                refreshToken = new RefreshToken
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = user.ID,
-                    Token = _tokenService.GenerateRefreshToken(),
-                    ExpiresOn = DateTime.UtcNow.AddDays(7)
-                };
-                await _context.RefreshTokens.AddAsync(refreshToken);
+                _logger.LogError("Failed to assign role 'User' to {Email}: {Errors}", userRegisterDto.Email,
+                    string.Join(", ", userRole.Errors.Select(e => e.Description)));
+                await transaction.RollbackAsync();
+                return IdentityResult.Failed(userRole.Errors.ToArray());
             }
 
             await _context.SaveChangesAsync();
-            return refreshToken;
-        }
-        
-        public async Task<AuthTokensDto> GenerateTokens(UserTokenDto user)
-        {
-            string token = _tokenService.GenerateToken(user);
-            var refreshToken = await CreateOrUpdateRefreshToken(user);
+            await transaction.CommitAsync();
+            _logger.LogInformation("User {Email} successfully registered and role assigned.", userRegisterDto.Email);
 
-            return new AuthTokensDto(token, refreshToken.Token);
+
+            return IdentityResult.Success;
         }
+
     }
 }
 

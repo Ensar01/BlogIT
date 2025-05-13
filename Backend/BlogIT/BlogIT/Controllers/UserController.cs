@@ -10,17 +10,17 @@ namespace BlogIT.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserService _userService;
-        public UserController(ApplicationDbContext context, UserService userService)
+        private readonly AuthService _authService;
+        public UserController(ApplicationDbContext context, AuthService authService)
         {
             _context = context;
-            _userService = userService;
+            _authService = authService;
             
         }
         [HttpGet]
         public async Task<bool> Exists(string? email, string? username)
         {
-            return await _userService.UserExists(email, username);
+            return await _authService.UserExists(email, username);
         }
     }
 }

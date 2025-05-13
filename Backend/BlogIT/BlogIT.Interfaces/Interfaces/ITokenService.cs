@@ -1,4 +1,5 @@
-﻿using BlogIT.Model.DataTransferObjects;
+﻿using BlogIT.DataTransferObjects;
+using BlogIT.Model.DataTransferObjects;
 
 namespace BlogIT.Interfaces
 {
@@ -6,5 +7,7 @@ namespace BlogIT.Interfaces
     {
         string GenerateToken(UserTokenDto user);
         string GenerateRefreshToken();
+        Task<AuthTokensDto> GenerateTokens(UserTokenDto user);
+        
     }
 }

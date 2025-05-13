@@ -1,6 +1,7 @@
 using BlogIT.Data;
 using BlogIT.Data.Models;
 using BlogIT.Interfaces;
+using BlogIT.Interfaces.Interfaces;
 using BlogIT.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -80,9 +81,9 @@ namespace BlogIT
            
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ITokenService, TokenService>();
-            builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenStorageService, CookieTokenStorageService>();
-            builder.Services.AddScoped<UserService>();
+           
 
 
             var app = builder.Build();

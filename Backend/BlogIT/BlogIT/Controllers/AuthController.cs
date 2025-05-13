@@ -3,6 +3,7 @@ using BlogIT.Data;
 using BlogIT.Data.Models;
 using BlogIT.DataTransferObjects;
 using BlogIT.Interfaces;
+using BlogIT.Interfaces.Interfaces;
 using BlogIT.Model.DataTransferObjects;
 using BlogIT.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -19,20 +20,18 @@ namespace BlogIT.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly ITokenService _tokenService;
         private readonly ITokenStorageService _tokenStorageService;
-        private readonly AuthService _authService;
-        private readonly UserService _userService;
-        public AuthController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService,
-            AuthService refreshTokenService, ITokenStorageService tokenStorageService, UserService userService)
+        private readonly IAuthService _authService;
+        private readonly ITokenService _tokenService;
+        public AuthController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager
+            , ITokenStorageService tokenStorageService, IAuthService authService, ITokenService tokenService)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
-            _tokenService = tokenService;
-            _authService = refreshTokenService;
             _tokenStorageService = tokenStorageService;
-            _userService = userService;
+            _authService = authService;
+            _tokenService = tokenService;
         }
 
         [HttpPost]
@@ -44,7 +43,7 @@ namespace BlogIT.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                if (await _userService.UserExists(userRegisterDto.Email, userRegisterDto.UserName))
+                if (await _authService.UserExists(userRegisterDto.Email, userRegisterDto.UserName))
                 {
                     return BadRequest(new ValidationProblemDetails
                     {
@@ -54,7 +53,7 @@ namespace BlogIT.Controllers
                     });
                 }
 
-                var result = await _userService.RegisterUser(userRegisterDto);
+                var result = await _authService.RegisterUser(userRegisterDto);
 
                 if (result.Succeeded)
                 {
@@ -90,7 +89,7 @@ namespace BlogIT.Controllers
                 return Unauthorized("Invalid credentials");
             }
             var userTokenDto = new UserTokenDto(user.Email, user.UserName, user.Id);
-            var AuthTokenDto = await _authService.GenerateTokens(userTokenDto);
+            var AuthTokenDto = await _tokenService.GenerateTokens(userTokenDto);
 
             _tokenStorageService.SetTokens(AuthTokenDto);
 
@@ -126,7 +125,7 @@ namespace BlogIT.Controllers
             _context.RefreshTokens.Remove(tokenEntry);
             await _context.SaveChangesAsync();
 
-            var AuthTokenDto = await _authService.GenerateTokens(userTokenDto);
+            var AuthTokenDto = await _tokenService.GenerateTokens(userTokenDto);
 
             _tokenStorageService.SetTokens(AuthTokenDto);
 

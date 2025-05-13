@@ -1,5 +1,9 @@
-﻿using BlogIT.Interfaces;
+﻿using BlogIT.Data;
+using BlogIT.Data.Models;
+using BlogIT.DataTransferObjects;
+using BlogIT.Interfaces;
 using BlogIT.Model.DataTransferObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,10 +17,13 @@ namespace BlogIT.Services
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config)
+        private readonly ApplicationDbContext _context;
+
+        public TokenService(IConfiguration config, ApplicationDbContext context)
         {
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
+            _context = context;
         }
         public string GenerateToken(UserTokenDto user)
         {
@@ -43,9 +50,46 @@ namespace BlogIT.Services
 
             return tokenHandler.WriteToken(token);
         }
+
         public string GenerateRefreshToken()
         {
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
         }
+
+        public async Task<RefreshToken> CreateOrUpdateRefreshToken(UserTokenDto user)
+        {
+            var refreshToken = await _context.RefreshTokens
+                .FirstOrDefaultAsync(r => r.UserId == user.ID);
+
+            if (refreshToken != null)
+            {
+                refreshToken.Token = GenerateRefreshToken();
+                refreshToken.ExpiresOn = DateTime.UtcNow.AddDays(7);
+            }
+            else
+            {
+                refreshToken = new RefreshToken
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = user.ID,
+                    Token = GenerateRefreshToken(),
+                    ExpiresOn = DateTime.UtcNow.AddDays(7)
+                };
+                await _context.RefreshTokens.AddAsync(refreshToken);
+            }
+
+            await _context.SaveChangesAsync();
+            return refreshToken;
+        }
+
+        public async Task<AuthTokensDto> GenerateTokens(UserTokenDto user)
+        {
+            string token = GenerateToken(user);
+            var refreshToken = await CreateOrUpdateRefreshToken(user);
+
+            return new AuthTokensDto(token, refreshToken.Token);
+        }
+
     }
 }
+
