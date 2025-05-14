@@ -3,6 +3,7 @@ using BlogIT.Data.Models;
 using BlogIT.DataTransferObjects;
 using BlogIT.Interfaces;
 using BlogIT.Model.DataTransferObjects;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -18,12 +19,14 @@ namespace BlogIT.Services
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
         private readonly ApplicationDbContext _context;
+        private readonly ITokenStorageService _tokenStorageService;
 
-        public TokenService(IConfiguration config, ApplicationDbContext context)
+        public TokenService(IConfiguration config, ApplicationDbContext context , ITokenStorageService tokenStorageService)
         {
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
             _context = context;
+            _tokenStorageService = tokenStorageService;
         }
         public string GenerateToken(UserTokenDto user)
         {
@@ -89,6 +92,32 @@ namespace BlogIT.Services
 
             return new AuthTokensDto(token, refreshToken.Token);
         }
+        public async Task<AuthTokensDto?> RefreshTokensAsync(HttpContext httpContext)
+        {
+            httpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken);
+
+            var tokenEntry = await _context.RefreshTokens
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.Token == refreshToken);
+
+            if (tokenEntry is null || tokenEntry.ExpiresOn < DateTime.UtcNow)
+            {
+                return null;
+            }
+
+            var user = tokenEntry.User;
+            var userTokenDto = new UserTokenDto(user.Email, user.UserName, user.Id);
+
+            _context.RefreshTokens.Remove(tokenEntry);
+            await _context.SaveChangesAsync();
+
+            var newTokens = await GenerateTokens(userTokenDto);
+
+            _tokenStorageService.SetTokens(newTokens);
+
+            return newTokens;
+        }
+
 
     }
 }

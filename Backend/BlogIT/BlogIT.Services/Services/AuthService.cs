@@ -16,11 +16,19 @@ namespace BlogIT.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<AuthService> _logger;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ITokenStorageService _tokenStorageService;
+        private readonly ITokenService _tokenService;
 
-        public AuthService(ApplicationDbContext context)
+        public AuthService(ApplicationDbContext context, UserManager<User> userManager, ILogger<AuthService> logger, SignInManager<User> signInManager,
+            ITokenStorageService tokenStorageService, ITokenService tokenService)
         {
             _context = context;
-           
+            _userManager = userManager;
+            _logger = logger;
+            _signInManager = signInManager;
+            _tokenStorageService = tokenStorageService;
+            _tokenService = tokenService;
         }
         public async Task<bool> UserExists(string email, string username)
         {
@@ -31,7 +39,7 @@ namespace BlogIT.Services
         }
 
 
-        public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto)
+        public async Task<IdentityResult> RegisterAsync(UserRegisterDto userRegisterDto)
         {
             await using var transaction = await _context.Database.BeginTransactionAsync();
             var user = new User
@@ -70,7 +78,24 @@ namespace BlogIT.Services
 
             return IdentityResult.Success;
         }
+        public async Task<bool> LoginAsync(UserLoginDto loginDto)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
+            if (user == null)
+                return false;
 
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            if (!result.Succeeded)
+                return false;
+
+            var userTokenDto = new UserTokenDto(user.Email, user.UserName, user.Id);
+            var tokens = await _tokenService.GenerateTokens(userTokenDto);
+
+
+            _tokenStorageService.SetTokens(tokens);
+
+            return true;
+        }
     }
 }
 

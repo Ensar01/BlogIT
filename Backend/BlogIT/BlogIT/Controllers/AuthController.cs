@@ -17,18 +17,13 @@ namespace BlogIT.Controllers
     [Route("[controller]/[action]")]
     public class AuthController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly ITokenStorageService _tokenStorageService;
         private readonly IAuthService _authService;
         private readonly ITokenService _tokenService;
-        public AuthController(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager
-            , ITokenStorageService tokenStorageService, IAuthService authService, ITokenService tokenService)
+        public AuthController(ITokenStorageService tokenStorageService, IAuthService authService, ITokenService tokenService)
         {
-            _context = context;
-            _userManager = userManager;
-            _signInManager = signInManager;
+
+
             _tokenStorageService = tokenStorageService;
             _authService = authService;
             _tokenService = tokenService;
@@ -53,7 +48,7 @@ namespace BlogIT.Controllers
                     });
                 }
 
-                var result = await _authService.RegisterUser(userRegisterDto);
+                var result = await _authService.RegisterAsync(userRegisterDto);
 
                 if (result.Succeeded)
                 {
@@ -72,26 +67,13 @@ namespace BlogIT.Controllers
         [HttpPost]
         public async Task<IActionResult> Login ([FromBody]UserLoginDto userLoginDto)
         {
-            if(!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userLoginDto.Username);
-            if (user == null)
-            {
-                return Unauthorized("Invalid credentials");
-            }
-         
-            var loginResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDto.Password, false);
-            if (!loginResult.Succeeded)
-            {
-                return Unauthorized("Invalid credentials");
-            }
-            var userTokenDto = new UserTokenDto(user.Email, user.UserName, user.Id);
-            var AuthTokenDto = await _tokenService.GenerateTokens(userTokenDto);
+            var isLoginSuccessful = await _authService.LoginAsync(userLoginDto);
 
-            _tokenStorageService.SetTokens(AuthTokenDto);
+            if (!isLoginSuccessful)
+                return Unauthorized("Invalid credentials");
 
             return Ok();
         }
@@ -108,63 +90,17 @@ namespace BlogIT.Controllers
         [HttpPost()]
         public async Task<IActionResult> RefreshToken()
         {
-            HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken);
+            var tokens = await _tokenService.RefreshTokensAsync(HttpContext);
 
-            var tokenEntry = await _context.RefreshTokens
-                .Include(r => r.User)
-                .FirstOrDefaultAsync(r => r.Token == refreshToken);
-
-            if (tokenEntry is null || tokenEntry.ExpiresOn < DateTime.UtcNow)
-            {
+            if (tokens is null)
                 return Unauthorized("The refresh token has expired");
-            }
-
-            var user = tokenEntry.User;
-            var userTokenDto = new UserTokenDto(user.Email, user.UserName, user.Id);
-
-            _context.RefreshTokens.Remove(tokenEntry);
-            await _context.SaveChangesAsync();
-
-            var AuthTokenDto = await _tokenService.GenerateTokens(userTokenDto);
-
-            _tokenStorageService.SetTokens(AuthTokenDto);
 
             return Ok();
         }
        
             
        
-        [HttpPut]
-        public async Task SeedAsync()
-        {
-            // Check if any users exist in the database, if not, add test users
-            var existingUser = await _userManager.FindByEmailAsync("testuser@example.com");
-            if (existingUser != null)
-            {
-                var user = new User
-                {
-                    UserName = "testusesr",
-                    Email = "testusersss@example.com",
-                    Name = "Test",
-                    LastName = "User",
-                    RegistrationDate = DateOnly.FromDateTime(DateTime.Now)
-                };
-
-                var result = await _userManager.CreateAsync(user, "TestPassword123!");
-
-                if (result.Succeeded)
-                {
-                    // Optionally, assign roles here
-                    // await _userManager.AddToRoleAsync(user, "Admin");
-
-                    Console.WriteLine("Test user created successfully.");
-                }
-                else
-                {
-                    Console.WriteLine("Error creating test user.");
-                }
-            }
-        }
+        
     }
 }
 

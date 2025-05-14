@@ -12,6 +12,7 @@ namespace BlogIT.Interfaces.Interfaces
     public interface IAuthService
     {
         Task<bool> UserExists(string email, string username);
-        Task<IdentityResult> RegisterUser(UserRegisterDto userRegisterDto);
+        Task<IdentityResult> RegisterAsync(UserRegisterDto userRegisterDto);
+        Task<bool> LoginAsync(UserLoginDto loginDto);
     }
 }
