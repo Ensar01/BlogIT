@@ -68,12 +68,16 @@ namespace BlogIT.Controllers
         public async Task<IActionResult> Login ([FromBody]UserLoginDto userLoginDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var isLoginSuccessful = await _authService.LoginAsync(userLoginDto);
 
             if (!isLoginSuccessful)
+            {
                 return Unauthorized("Invalid credentials");
+            }
 
             return Ok();
         }
@@ -90,17 +94,15 @@ namespace BlogIT.Controllers
         [HttpPost()]
         public async Task<IActionResult> RefreshToken()
         {
-            var tokens = await _tokenService.RefreshTokensAsync(HttpContext);
+            var isIssued = await _tokenService.RefreshTokensAsync(HttpContext);
 
-            if (tokens is null)
+            if (!isIssued)
+            {
                 return Unauthorized("The refresh token has expired");
+            }
 
             return Ok();
         }
-       
-            
-       
-        
     }
 }
 

@@ -92,7 +92,8 @@ namespace BlogIT.Services
 
             return new AuthTokensDto(token, refreshToken.Token);
         }
-        public async Task<AuthTokensDto?> RefreshTokensAsync(HttpContext httpContext)
+
+        public async Task<bool> RefreshTokensAsync(HttpContext httpContext)
         {
             httpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken);
 
@@ -102,7 +103,7 @@ namespace BlogIT.Services
 
             if (tokenEntry is null || tokenEntry.ExpiresOn < DateTime.UtcNow)
             {
-                return null;
+                return false;
             }
 
             var user = tokenEntry.User;
@@ -115,7 +116,7 @@ namespace BlogIT.Services
 
             _tokenStorageService.SetTokens(newTokens);
 
-            return newTokens;
+            return true;
         }
 
 

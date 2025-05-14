@@ -9,6 +9,6 @@ namespace BlogIT.Interfaces
         string GenerateToken(UserTokenDto user);
         string GenerateRefreshToken();
         Task<AuthTokensDto> GenerateTokens(UserTokenDto user);
-        Task<AuthTokensDto?> RefreshTokensAsync(HttpContext httpContext);
+        Task<bool> RefreshTokensAsync(HttpContext httpContext);
     }
 }
