@@ -1,4 +1,4 @@
 # BlogIT
 
-<p><img src="https://github.com/Ensar01/Slike/blob/main/Sl/Asset%204.png"></p>
+<p><img src="https://github.com/Ensar01/BlogIT/blob/main/Frontend/src/assets/images/BlogITLogo.png"></p>
 
